@@ -17,24 +17,29 @@ This file simply turns GPIO4 on and off for 10 times.
 ## FILE3: VOLUME.PY
 
 this file makes a PWM (pulse width modulator: turns voltage on and off really fast to simulate a lower voltage) to control the volume of the speaker.
-
 You can control the volume of the speaker by editing the code or inserting it in the command line
 
 *duty_cycle = 10*
+
 change this ^ to change the default volume of the speaker
 
 *> python filename.py 40*
+
 enter this in the terminal ^ to input a volume percentage. Changing this does the same thing as changing the duty cycle, but its a lot faster
 
-##terminal tricks
+## terminal tricks
 
 every terminal has its location. If you want to see every file in your current location (directory), type: 
 *> ls*
+
 This tells you the names of all the files and folders that is in your current location. 
 CD lets you change locations to other folders/directories
 *> cd Documents*
+
 *> cd ../*
+
 this ^ changes you to the parent folder
 to change the name of a file, use the mv command
 *> mv badfilename.py volume.py*
+
 this ^ renames badfilename.py to volume.py. it stands for move
