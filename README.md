@@ -40,6 +40,7 @@ CD lets you change locations to other folders/directories
 
 this ^ changes you to the parent folder
 to change the name of a file, use the mv command
+
 *> mv badfilename.py volume.py*
 
 this ^ renames badfilename.py to volume.py. it stands for move
