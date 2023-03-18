@@ -3,18 +3,18 @@ I have included three files that you can copy to your Raspberry Pi.
 
 some terminal tips are also included at the end.
 
-##FILE1: TURNON.PY
+## FILE1: TURNON.PY
 
 this file is simple, it just turns on GPIO4 for 10 seconds. Use this file to test if GPIO4 is actually working.
 The red wire of the speaker should be connected to GPIO4, The black wire of the speaker should be connected to GND.
 
 when you run the program, the speaker should turn on. When the program ends, the speaker should be off. If the Raspberry Pi does not work like this, the circuit is connected incorrectly.
 
-##FILE2: BEEPBEEP.PY
+## FILE2: BEEPBEEP.PY
 
 This file simply turns GPIO4 on and off for 10 times.
 
-##FILE3: VOLUME.PY
+## FILE3: VOLUME.PY
 
 this file makes a PWM (pulse width modulator: turns voltage on and off really fast to simulate a lower voltage) to control the volume of the speaker.
 
