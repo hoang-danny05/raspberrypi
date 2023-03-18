@@ -29,16 +29,22 @@ enter this in the terminal ^ to input a volume percentage. Changing this does th
 
 ## terminal tricks
 
+__ls command__
 every terminal has its location. If you want to see every file in your current location (directory), type: 
+
 *> ls*
 
+__cd command__
 This tells you the names of all the files and folders that is in your current location. 
 CD lets you change locations to other folders/directories
+
 *> cd Documents*
 
 *> cd ../*
 
 this ^ changes you to the parent folder
+
+__mv command__
 to change the name of a file, use the mv command
 
 *> mv badfilename.py volume.py*
