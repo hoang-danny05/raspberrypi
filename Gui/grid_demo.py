@@ -18,6 +18,7 @@ class MainWindow(QtWidgets.QWidget):
         label2 = QtWidgets.QLabel("Text2")
         button1 = QtWidgets.QPushButton("x")
         button2 = QtWidgets.QSpinBox(self, value=100, prefix='$', singleStep=5, maximum=1000)
+        button2.setValue(100) # default max value is 99
         #MAINWINDOW - LAYOUt
         layout = QtWidgets.QGridLayout()
         self.setLayout(layout)
