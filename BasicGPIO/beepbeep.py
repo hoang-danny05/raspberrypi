@@ -19,4 +19,4 @@ except KeyboardInterrupt:
     print("Exited.")
 
 print("Cleaning Up")
-GPI.cleanup()
+GPIO.cleanup()
