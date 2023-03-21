@@ -5,7 +5,7 @@ from PyQt5 import QtGui
 from PyQt5 import QtCore
 import RPi.GPIO as GPIO
 #initialize Raspberry pi
-power = 20
+power = 25
 GPIO.setmode(GPIO.BOARD)
 GPIO.setup(7, GPIO.OUT)
 pwm = GPIO.PWM(7,400)
