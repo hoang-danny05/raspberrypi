@@ -28,8 +28,8 @@ class MainWindow(QtWidgets.QWidget):
             checkable=True, 
             checked=False
         )
-        self.button.move(50,100)
         self.button.clicked.connect(self.button_toggled) 
+        self.button.move(50,100)
         #Custom Code End
         #widget calls its show method, it becomes the top level window
         self.show()
