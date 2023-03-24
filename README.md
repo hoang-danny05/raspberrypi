@@ -83,7 +83,15 @@ as demonstrated by the code above, you can define callback functions that would 
 self.button.clicked.connect(lambda self, checked: print(f"state: {checked}")
 ```
 
+when you need to have code that must run when the app closes, you must store __app.exec()'s__ result in a variable, and then you may write the code that must be run on exit. Once done, pass the result to __sys.exit()__. 
 
+```python
+if __name__ == "__main__": #code that only runs when the file is explicity called in the terminal
+    res = app.exec()
+    print("closed") #runs when the app/GUI is exited
+    GPIO.cleanup()
+    sys.exit(res)
+```
 ## terminal tips
 
 __ls command__:
