@@ -77,6 +77,13 @@ class MainWindow(QWidgets.QWidget):
         #code that runs whenever the button is clicked
 ```
 
+as demonstrated by the code above, you can define callback functions that would be called once the button is clicked. Alternatively, if the function that you want to execute is small (meaning that it only consists of one line), then you may use [lambda](https://sparkbyexamples.com/python/python-lambda-function/) functions. 
+
+```python
+self.button.clicked.connect(lambda self, checked: print(f"state: {checked}")
+```
+
+
 ## terminal tips
 
 __ls command__:
