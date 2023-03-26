@@ -1,7 +1,5 @@
 import sys
-from PyQt5 import QtWidgets
-from PyQt5 import QtGui
-from PyQt5 import QtCore
+from PyQt5 import QtWidgets, QtGui, QtCore
 
 #class for the main window
 class MainWindow(QtWidgets.QWidget):
@@ -10,6 +8,13 @@ class MainWindow(QtWidgets.QWidget):
         #MainWindow Constructor
         super().__init__()
         #Custom Code Start
+        form_layout = QtWidgets.QFormLayout()
+        self.setLayout(form_layout)
+        #setting the title 
+        form_layout.addRow(QtWidgets.QLabel("Really cool form"))
+        #setting first input
+        self.line1 = QtWidgets.QLineEdit(self)
+        form_layout.addRow("Name: " , self.line1)
 
         #Custom Code End
         self.show()
