@@ -5,7 +5,7 @@
 # Public Domain
 
 import time
-import pigpio # http://abyz.co.uk/rpi/pigpio/python.html
+import pigpio
 
 """
 This script reads the temperature of a type K thermocouple
