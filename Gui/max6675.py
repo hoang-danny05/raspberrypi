@@ -1,99 +1,65 @@
-#a class to represent and to make reading from the thermocouple easy
-#source1: https://www.electroniclinic.com/raspberry-pi-pico-and-max6675-based-industrial-temperature-monitoring-system/
-#other sources:
-# https://forums.raspberrypi.com/viewtopic.php?t=145568
-# https://github.com/Tuckie/max31855/pull/4/files
+#!/usr/bin/env python
+
+# MAX6675.py
+# 2016-05-02
+# Public Domain
 
 import time
-class MAX6675:
-    MEASUREMENT_PERIOD_MS = 220
+import pigpio # http://abyz.co.uk/rpi/pigpio/python.html
 
-    def __init__(self, sck, cs, so):
-        """
-        Creates new object for controlling MAX6675
-        :param sck: SCK (clock) pin, must be configured as Pin.OUT
-        :param cs: CS (select) pin, must be configured as Pin.OUT
-        :param so: SO (data) pin, must be configured as Pin.IN
-        """
-        # Thermocouple
-        self._sck = sck
-        self._sck.low()
+"""
+This script reads the temperature of a type K thermocouple
+connected to a MAX6675 SPI chip.
 
-        self._cs = cs
-        self._cs.high()
+Type K thermocouples are made of chromel (+ve) and alumel (-ve)
+and are the commonest general purpose thermocouple with a
+sensitivity of approximately 41 uV/C.
 
-        self._so = so
-        self._so.low()
+The MAX6675 returns a 12-bit reading in the range 0 - 4095 with
+the units as 0.25 degrees centigrade.  So the reported
+temperature range is 0 - 1023.75 C.
 
-        self._last_measurement_start = 0
-        self._last_read_temp = 0
-        self._error = 0
+Accuracy is about +/- 2 C between 0 - 700 C and +/- 5 C
+between 700 - 1000 C.
 
-    def _cycle_sck(self):
-        self._sck.high()
-        time.sleep_us(1)
-        self._sck.low()
-        time.sleep_us(1)
+The MAX6675 returns 16 bits as follows
 
-    def refresh(self):
-        """
-        Start a new measurement.
-        """
-        self._cs.low()
-        time.sleep_us(10)
-        self._cs.high()
-        self._last_measurement_start = time.ticks_ms()
+F   E   D   C   B   A   9   8   7   6   5   4   3   2   1   0
+0  B11 B10  B9  B8  B7  B6  B5  B4  B3  B2  B1  B0  0   0   X
 
-    def ready(self):
-        """
-        Signals if measurement is finished.
-        :return: True if measurement is ready for reading.
-        """
-        return time.ticks_ms() - self._last_measurement_start > MAX6675.MEASUREMENT_PERIOD_MS
+The reading is in B11 (most significant bit) to B0.
 
-    def error(self):
-        """
-        Returns error bit of last reading. If this bit is set (=1), there's problem with the
-        thermocouple - it can be damaged or loosely connected
-        :return: Error bit value
-        """
-        return self._error
+The conversion time is 0.22 seconds.  If you try to read more
+often the sensor will always return the last read value.
+"""
 
-    def read(self):
-        """
-        Reads last measurement and starts a new one. If new measurement is not ready yet, returns last value.
-        Note: The last measurement can be quite old (e.g. since last call to `read`).
-        To refresh measurement, call `refresh` and wait for `ready` to become True before reading.
-        :return: Measured temperature
-        """
-        # Check if new reading is available
-        if self.ready():
-            # Bring CS pin low to start protocol for reading result of
-            # the conversion process. Forcing the pin down outputs
-            # first (dummy) sign bit 15.
-            self._cs.low()
-            time.sleep_us(10)
+pi = pigpio.pi()
 
-            # Read temperature bits 14-3 from MAX6675.
-            value = 0
-            for i in range(12):
-                # SCK should resemble clock signal and new SO value
-                # is presented at falling edge
-                self._cycle_sck()
-                value += self._so.value() << (11 - i)
+if not pi.connected:
+   exit(0)
 
-            # Read the TC Input pin to check if the input is open
-            self._cycle_sck()
-            self._error = self._so.value()
+# pi.spi_open(0, 1000000, 0)   # CE0, 1Mbps, main SPI
+# pi.spi_open(1, 1000000, 0)   # CE1, 1Mbps, main SPI
+# pi.spi_open(0, 1000000, 256) # CE0, 1Mbps, auxiliary SPI
+# pi.spi_open(1, 1000000, 256) # CE1, 1Mbps, auxiliary SPI
+# pi.spi_open(2, 1000000, 256) # CE2, 1Mbps, auxiliary SPI
 
-            # Read the last two bits to complete protocol
-            for i in range(2):
-                self._cycle_sck()
+sensor = pi.spi_open(2, 1000000, 256) # CE2 on auxiliary SPI
 
-            # Finish protocol and start new measurement
-            self._cs.high()
-            self._last_measurement_start = time.ticks_ms()
+stop = time.time() + 600
 
-            self._last_read_temp = value * 0.25
+while time.time() < stop:
+   c, d = pi.spi_read(sensor, 2)
+   if c == 2:
+      word = (d[0]<<8) | d[1]
+      if (word & 0x8006) == 0: # Bits 15, 2, and 1 should be zero.
+         t = (word >> 3)/4.0
+         print("{:.2f}".format(t))
+      else:
+         print("bad reading {:b}".format(word))
+   time.sleep(0.25) # Don't try to read more often than 4 times a second.
 
-        return self._last_read_temp
+pi.spi_close(sensor)
+
+pi.stop()
+
