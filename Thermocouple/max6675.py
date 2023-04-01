@@ -22,7 +22,7 @@ class MAX6675:
     def temp(self):
         b, d = self.pi.spi_read(self.h1, 2) #reads two bytes from h1
         data = (d[0] << 8) | d[1] #condense 2 bytes into a variable
-        if b is not 2:
+        if b != 2:
             print("ERROR, DATA NOT RECIEVED")
         if (data & 0x8006 > 0):
             print("ERROR, INVALID DATA")
@@ -32,7 +32,7 @@ class MAX6675:
     def output(self):
         b, d = self.pi.spi_read(self.h1, 2) #reads two bytes from h1
         data = (d[0] << 8) | d[1] #condense 2 bytes into a variable
-        if b is not 2:
+        if b != 2:
             print("ERROR, DATA NOT RECIEVED")
         if (data & 0x8006 > 0):
             print("ERROR, INVALID DATA")
@@ -49,3 +49,10 @@ class MAX6675:
 
     def print_binary(self, bytes):
         print("{:>16}".format(bin(bytes)))
+
+    def cleanup(self):
+        self.pi.stop()
+
+    def __del__(self):
+        self.cleanup()
+        print("cleaning up")
