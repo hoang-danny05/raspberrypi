@@ -1,8 +1,8 @@
 # MICROPYTHON ONLY from machine import Pin, I2C
-import time
+from time import sleep
 from max6675 import MAX6675
 import sys
-from PyQt5
+from PyQt5 import QtWidgets
 
 #pinconfig
 
