@@ -98,8 +98,8 @@ if __name__ == '__main__':
 
     sensor = Max6675(0, 0)
     for cache in [0, 5]:
-        print '**********'
-        print 'Cache lifetime is %d' % cache
+        print('**********')
+        print('Cache lifetime is %d' % cache)
         sensor.cache_lifetime = cache
         for c in range(10):
-            print sensor.temperature
+            print(sensor.temperature)
