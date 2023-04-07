@@ -8,10 +8,10 @@ GPIO.setup(pin, GPIO.OUT)
 #blink
 try:
     for i in range(10):
-        gpio.output(pin, False)
+        GPIO.output(pin, False)
         print("off")
         time.sleep(1)
-        gpio.output(pin, True)
+        GPIO.output(pin, True)
         print("on")
         time.sleep(1)
     print("loop naturally exited")
