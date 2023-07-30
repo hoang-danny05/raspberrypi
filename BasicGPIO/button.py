@@ -1,3 +1,4 @@
+#script for a tactile button. Use a 4-pin button and it should stretch 3x4 spaces on the breadboard. 
 import RPi.GPIO as GPIO
 import time
 
@@ -16,3 +17,5 @@ while True:
     except KeyboardInterrupt:
         print("\n exited")
         break
+
+GPIO.cleanup()
